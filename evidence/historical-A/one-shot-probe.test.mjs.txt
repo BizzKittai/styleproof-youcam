@@ -1,0 +1,179 @@
+import assert from 'node:assert/strict';
+import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import test from 'node:test';
+import { API_ORIGIN, INPUTS, MAX_TOTAL_POLLS, POLL_INTERVAL_MS, assertApiURL, runProbe } from './one-shot-probe.mjs';
+
+const KEY = 'OFFLINE_FAKE_KEY_NEVER_VALID';
+const signed = name => `https://test-bucket.s3.us-west-2.amazonaws.com/${name}?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=offline&X-Amz-Date=20261030T170000Z&X-Amz-Expires=900&X-Amz-Signature=${'a'.repeat(64)}`;
+const reply = data => new Response(JSON.stringify(data), { status: 200, headers: { 'Content-Type': 'application/json' } });
+function fakeProvider({ badUploadHost = false, badUploadHeaders = false, lostMetadata = false,
+  lostTask = false, failedFirstPoll = false, running = false, redirect = false, badResult = false, opaqueIds = false } = {}) {
+  const calls = [];
+  let polls = 0;
+  const fileIds = opaqueIds ? ['file+zero/part=', 'ref+one/part='] : ['file_0', 'file_1'];
+  const taskId = opaqueIds ? 'task+/opaque==' : 'task_offline_1';
+  const fetchImpl = async (url, options) => {
+    calls.push({ url, ...options });
+    assert.equal(options.redirect, 'error');
+    if (url.startsWith(API_ORIGIN)) assert.equal(options.headers.Authorization, `Bearer ${KEY}`);
+    else assert.equal(options.headers.Authorization, undefined, 'API bearer must never reach storage');
+    if (url === `${API_ORIGIN}/s2s/v2.0/file`) {
+      if (lostMetadata) throw new Error(`deliberate private transport text ${KEY}`);
+      const body = JSON.parse(options.body);
+      assert.equal(body.files.length, 2);
+      return reply({ status: 200, data: { files: INPUTS.map((input, index) => ({
+        file_name: input.name, content_type: 'image/png', file_id: fileIds[index],
+        requests: [{ method: 'PUT', url: badUploadHost && index === 1 ? signed(input.name).replace('test-bucket.s3.us-west-2.amazonaws.com', 'evil.invalid') : signed(input.name),
+          headers: { 'Content-Type': 'image/png', 'Content-Length': String(input.bytes),
+            ...(badUploadHeaders ? { Authorization: `Bearer ${KEY}` } : {}) } }],
+      })) } });
+    }
+    if (options.method === 'PUT') return new Response(null, { status: redirect ? 307 : 200, headers: redirect ? { Location: 'https://evil.invalid/' } : {} });
+    if (url === `${API_ORIGIN}/s2s/v2.0/task/cloth-v4`) {
+      assert.deepEqual(JSON.parse(options.body), { src_file_id: fileIds[0], ref_file_id: fileIds[1], garment_category: 'upper_body' });
+      if (lostTask) throw new Error(`lost response containing ${KEY} and ${signed('private')}`);
+      return reply({ status: 200, data: { task_id: taskId } });
+    }
+    if (url === `${API_ORIGIN}/s2s/v2.0/task/cloth-v4/${encodeURIComponent(taskId)}`) {
+      polls += 1;
+      if (failedFirstPoll && polls === 1) throw new Error('temporary offline transport failure');
+      return reply({ status: 200, data: { error: null, task_status: running ? 'running' : 'success',
+        results: running ? null : { url: badResult ? signed('result.png').replace('test-bucket.s3.us-west-2.amazonaws.com', 'evil.invalid') : signed('result.png') } } });
+    }
+    if (url === signed('result.png') && options.method === 'GET') {
+      return new Response(Buffer.from('89504e470d0a1a0a00000000', 'hex'), { status: 200, headers: { 'Content-Type': 'image/png' } });
+    }
+    assert.fail('Unexpected fake request');
+  };
+  return { calls, fetchImpl, count(method, suffix) { return calls.filter(x => x.method === method && x.url === `${API_ORIGIN}${suffix}`).length; } };
+}
+async function fixture(t) {
+  const runtimeDir = await mkdtemp(path.join(os.tmpdir(), 'styleproof-offline-'));
+  t.after(() => rm(runtimeDir, { recursive: true, force: true }));
+  const sleeps = [];
+  return { runtimeDir, sleep: async ms => { sleeps.push(ms); assert.equal(ms, POLL_INTERVAL_MS); }, sleeps,
+    journal: async () => JSON.parse(await readFile(path.join(runtimeDir, 'one-shot-probe.json'), 'utf8')) };
+}
+const exec = (f, api, extra = {}) => runProbe({ execute: true, apiKey: KEY, runtimeDir: f.runtimeDir,
+  sleep: f.sleep, fetchImpl: api.fetchImpl, ...extra });
+
+test('default dry-run validates fixed originals, without a key, fetch or journal', async t => {
+  const f = await fixture(t);
+  const result = await runProbe({ runtimeDir: f.runtimeDir, fetchImpl: () => assert.fail('network in dry-run') });
+  assert.equal(result.dryRun, true);
+  assert.equal(result.inputs.length, 2);
+  await assert.rejects(stat(path.join(f.runtimeDir, 'one-shot-probe.json')), { code: 'ENOENT' });
+});
+
+test('exact successful probe: 1 metadata POST, 2 PUTs, 1 task POST and explicit 10s poll; no download by default', async t => {
+  const f = await fixture(t); const api = fakeProvider();
+  const result = await exec(f, api);
+  assert.equal(api.count('POST', '/s2s/v2.0/file'), 1);
+  assert.equal(api.count('POST', '/s2s/v2.0/task/cloth-v4'), 1);
+  assert.equal(api.calls.filter(x => x.method === 'PUT').length, 2);
+  assert.equal(api.calls.length, 5);
+  assert.equal(result.realProviderSuccess, true);
+  assert.equal(result.resultDownloaded, false);
+  assert.equal((await stat(path.join(f.runtimeDir, 'one-shot-probe.json'))).mode & 0o777, 0o600);
+  assert.equal((await stat(f.runtimeDir)).mode & 0o777, 0o700);
+  assert.doesNotMatch(JSON.stringify(result), /OFFLINE_FAKE|X-Amz|https:/);
+});
+
+test('changed original input is rejected before any request', async t => {
+  const f = await fixture(t); const api = fakeProvider();
+  const readInput = async name => { const data = Buffer.from(await readFile(name)); data[100] ^= 1; return data; };
+  await assert.rejects(exec(f, api, { readInput }), { code: 'INPUT_HASH_MISMATCH' });
+  assert.equal(api.calls.length, 0);
+});
+
+test('documented opaque + / = file IDs are preserved; task ID is URL-encoded, including on resume', async t => {
+  const f = await fixture(t); const api = fakeProvider({ opaqueIds: true, failedFirstPoll: true });
+  await assert.rejects(exec(f, api), { code: 'TRANSPORT_FAILED_NO_RETRY' });
+  const result = await exec(f, api, { resume: true });
+  assert.equal(result.realProviderSuccess, true);
+  assert.deepEqual((await f.journal()).fileIds, ['file+zero/part=', 'ref+one/part=']);
+  assert.equal((await f.journal()).taskId, 'task+/opaque==');
+  const gets = api.calls.filter(call => call.url.startsWith(`${API_ORIGIN}/s2s/v2.0/task/cloth-v4/`));
+  assert.equal(gets.length, 2);
+  assert.ok(gets.every(call => call.url.endsWith('/task%2B%2Fopaque%3D%3D')));
+  assert.equal(api.count('POST', '/s2s/v2.0/task/cloth-v4'), 1);
+});
+
+test('second malicious upload host rejects the entire plan before either PUT or generation', async t => {
+  const f = await fixture(t); const api = fakeProvider({ badUploadHost: true });
+  await assert.rejects(exec(f, api), { code: 'SIGNED_S3_URL_REJECTED' });
+  assert.equal(api.calls.length, 1);
+  assert.equal((await f.journal()).taskPostAttempts, 0);
+});
+
+test('provider storage headers cannot leak bearer credentials', async t => {
+  const f = await fixture(t); const api = fakeProvider({ badUploadHeaders: true });
+  await assert.rejects(exec(f, api), { code: 'UPLOAD_HEADER_REJECTED' });
+  assert.equal(api.calls.length, 1);
+});
+
+test('lost generation response persists intent; resume and restart cannot make a second POST', async t => {
+  const f = await fixture(t); const api = fakeProvider({ lostTask: true });
+  await assert.rejects(exec(f, api), { code: 'TRANSPORT_FAILED_NO_RETRY' });
+  const saved = await f.journal();
+  assert.equal(saved.taskPostAttempts, 1);
+  assert.equal(saved.taskId, undefined);
+  await assert.rejects(exec(f, api, { resume: true }), { code: 'NO_TASK_ID_FOR_RESUME_DO_NOT_REPOST' });
+  await assert.rejects(exec(f, api), { code: 'EXISTING_JOURNAL_USE_RESUME_NO_NEW_POST' });
+  assert.equal(api.count('POST', '/s2s/v2.0/task/cloth-v4'), 1);
+});
+
+test('lost metadata response cannot be re-posted either', async t => {
+  const f = await fixture(t); const api = fakeProvider({ lostMetadata: true });
+  await assert.rejects(exec(f, api), { code: 'TRANSPORT_FAILED_NO_RETRY' });
+  await assert.rejects(exec(f, api, { resume: true }), { code: 'NO_TASK_ID_FOR_RESUME_DO_NOT_REPOST' });
+  assert.equal(api.count('POST', '/s2s/v2.0/file'), 1);
+});
+
+test('an interrupted known task resumes only GET polling, never POST/upload', async t => {
+  const f = await fixture(t); const api = fakeProvider({ failedFirstPoll: true });
+  await assert.rejects(exec(f, api), { code: 'TRANSPORT_FAILED_NO_RETRY' });
+  const result = await exec(f, api, { resume: true });
+  assert.equal(result.realProviderSuccess, true);
+  assert.equal(api.count('POST', '/s2s/v2.0/task/cloth-v4'), 1);
+  assert.equal(api.calls.filter(x => x.method === 'PUT').length, 2);
+  assert.equal(result.pollAttempts, 2);
+});
+
+test('poll limit is persisted across resumes, with at most30total GETs', async t => {
+  const f = await fixture(t); const api = fakeProvider({ running: true });
+  await exec(f, api, { pollLimit: 12 });
+  await exec(f, api, { resume: true, pollLimit: 30 });
+  const count = api.calls.length;
+  const result = await exec(f, api, { resume: true, pollLimit: 30 });
+  assert.equal(result.pollAttempts, MAX_TOTAL_POLLS);
+  assert.equal(api.calls.length, count);
+  assert.equal(api.count('POST', '/s2s/v2.0/task/cloth-v4'), 1);
+});
+
+test('redirect and wrong API host cannot send bearer or create a task', async t => {
+  assert.throws(() => assertApiURL('https://yce-api-01.makeupar.com.evil.invalid/s2s/v2.0/file'), { code: 'API_HOST_REJECTED' });
+  const f = await fixture(t); const api = fakeProvider({ redirect: true });
+  await assert.rejects(exec(f, api), { code: 'UPLOAD_HTTP_307' });
+  assert.equal(api.count('POST', '/s2s/v2.0/task/cloth-v4'), 0);
+});
+
+test('result download requires explicit flag and exact signed provider result', async t => {
+  const f = await fixture(t); const api = fakeProvider();
+  const result = await exec(f, api, { downloadResult: true });
+  assert.equal(result.resultDownloaded, true);
+  assert.equal(api.calls.filter(x => x.url === signed('result.png')).length, 1);
+  assert.equal((await stat(path.join(f.runtimeDir, 'result.png'))).mode & 0o777, 0o600);
+  const again = await exec(f, api, { resume: true, downloadResult: true });
+  assert.equal(again.resultDownloaded, true);
+  assert.equal(api.calls.filter(x => x.url === signed('result.png')).length, 1);
+});
+
+test('unapproved result URL is never downloaded, despite successful provider status', async t => {
+  const f = await fixture(t); const api = fakeProvider({ badResult: true });
+  await assert.rejects(exec(f, api, { downloadResult: true }), { code: 'RESULT_URL_REJECTED_NO_DOWNLOAD' });
+  assert.equal(api.calls.length, 5);
+  assert.equal((await f.journal()).resultDownloadAttempted, undefined);
+});

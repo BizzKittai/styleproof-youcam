@@ -1,0 +1,29 @@
+Actual offline Node 24 app test run; exit code 0; chunk e01711
+Command: node --test tools/app.test.mjs
+
+✔ phase2 manifest contains two independently recorded genuine outputs and four ledger-verified units (0.790167ms)
+✔ every included source/result file has the actual approved SHA256; no changed or invented output (8.957042ms)
+✔ a foreign/signed URL or an altered actual-output hash fails closed (0.266125ms)
+✔ B cannot reuse A or swap its approved garment reference (0.0815ms)
+✔ unexpected secret/raw-response fields, invented counts and missing actual usage are rejected (0.081791ms)
+✔ repeated choice/view/reset actions alter local state only and preserve immutable evidence (0.229458ms)
+✔ manifest retrieval has one same-origin read and no account credentials or redirect following (0.095083ms)
+✔ static route serves a working document with restrictive CSP and no active-generation form (0.681ms)
+✔ two-look view pairs actual A and B, while before/after shares the unchanged synthetic source (0.1435ms)
+✔ single-image modes show only the requested original or selected real output (0.094208ms)
+✔ per-run counters and observation times retain the different A and B execution records (0.074917ms)
+✔ invented zero debit, account-balance-derived measurement or altered observation time fails closed (0.089541ms)
+✔ invalid selections, view names, missing results and injected labels do not become successes (0.09725ms)
+✔ manifest failures and extra nested raw provider fields are rejected without a fallback output (0.100375ms)
+✔ both immutable output assets are served as JPEG while mutation and unknown sibling assets are refused (1.116917ms)
+✔ actual client rendering and repeated controls make only one local manifest read and use each matching result (22.01675ms)
+✔ public server cannot process, upload, mutate or serve private/operator paths (0.1735ms)
+✔ public package contains no environment/runtime files, external executable imports or unsafe DOM insertion (0.717667ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 75.971541

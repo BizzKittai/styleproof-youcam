@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="Compare two real recorded YouCam clothing results, original synthetic inputs, and verified processing-unit evidence.">
+  <meta name="color-scheme" content="light">
+  <title>StyleProof — A second look, with a clear record</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#studio">Skip to the comparison</a>
+  <header class="site-header shell">
+    <a class="brand" href="./" aria-label="StyleProof home">
+      <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="m7 5 4-2h6l4 2 5 5-4 4-2-2v13H8V12l-2 2-4-4 5-5Z"/><path d="M11 3c0 5 6 5 6 0"/></svg>
+      <span>StyleProof<span class="brand-period">.</span></span>
+    </a>
+    <nav aria-label="Page navigation"><a href="#studio">The studio</a><a href="#provenance">The proof</a></nav>
+    <span class="phase-pill"><span class="status-dot"></span> Recorded demo</span>
+  </header>
+
+  <main class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow"><span></span> CONSIDER THE LOOK. KNOW THE SOURCE.</p>
+        <h1 id="page-title">A second look,<br><em>with a clear record.</em></h1>
+        <p class="intro-copy">Two real virtual try-ons, with a clear record of what was generated. Compare the looks, see the original, and follow the proof.</p>
+      </div>
+      <aside class="intro-note">
+        <span class="small-label">A LITTLE CONTEXT</span>
+        <p>Two generated looks.<br>Every detail accounted for.</p>
+        <span class="muted">Synthetic model. Recorded results.<br>No photos or new requests from this page.</span>
+      </aside>
+    </section>
+
+    <div id="loading" class="loading-note" role="status">Checking the demo evidence…</div>
+    <div id="load-error" class="load-error" role="alert" hidden>The demo evidence could not be loaded. No generation request was made. Use the local preview instructions in the README.</div>
+
+    <section id="studio" class="studio" aria-label="Clothing comparison studio" hidden>
+      <aside class="wardrobe">
+        <div class="section-heading"><h2>The wardrobe</h2><span id="generated-count">02 / 02</span></div>
+        <p class="section-help">Choose a look for its before/after &amp; proof.</p>
+        <div class="options" role="group" aria-label="Choose a clothing option">
+          <button type="button" class="option-card" data-option="look-a" aria-pressed="true">
+            <span class="garment-frame"><img id="garment-a" alt="Original synthetic forest-green crewneck reference" width="1254" height="1254"><span class="option-index">A</span></span>
+            <span class="option-card-body"><span class="option-topline"><strong>Forest crewneck</strong><span class="selection-check" aria-hidden="true">✓</span></span><span class="color-label"><i class="swatch forest"></i> Forest green</span><span class="mini-status ready"><span></span> Real result saved</span></span>
+          </button>
+          <button type="button" class="option-card" data-option="look-b" aria-pressed="false">
+            <span class="garment-frame"><img id="garment-b" alt="Original synthetic rust-shirt reference" width="1254" height="1254"><span class="option-index">B</span></span>
+            <span class="option-card-body"><span class="option-topline"><strong>Rust shirt</strong><span class="selection-check" aria-hidden="true">✓</span></span><span class="color-label"><i class="swatch rust"></i> Rust</span><span class="mini-status ready"><span></span> Real result saved</span></span>
+          </button>
+        </div>
+        <p class="wardrobe-note">Both looks are genuine, saved YouCam Clothes V4 outputs. Changing the view uses no additional processing units.</p>
+      </aside>
+
+      <div class="viewer-panel">
+        <div class="viewer-toolbar">
+          <div><span class="small-label">THE RECORDED TRY-ONS</span><h2 id="selected-title">Two looks, one original</h2><p id="selected-hint" class="selected-hint">Selected look: Forest crewneck</p></div>
+          <div class="view-switch" role="group" aria-label="Choose image view">
+            <button type="button" data-view="looks" aria-pressed="true">Two looks</button>
+            <button type="button" data-view="compare" aria-pressed="false">Before / after</button>
+            <button type="button" data-view="original" aria-pressed="false">Original</button>
+            <button type="button" data-view="result" aria-pressed="false">Result</button>
+          </div>
+        </div>
+        <div class="image-stage" id="image-stage" data-mode="looks">
+          <figure id="original-figure" class="photo-frame">
+            <span class="image-tag" id="original-tag">Forest crewneck · YouCam result</span>
+            <img id="original-image" alt="Real recorded YouCam Clothes V4 output: synthetic adult model wearing the forest crewneck" width="1024" height="1536">
+            <figcaption id="original-caption">Forest crewneck · Saved real output</figcaption>
+          </figure>
+          <figure id="result-figure" class="photo-frame">
+            <span class="image-tag result-tag" id="result-tag">Rust shirt · YouCam result</span>
+            <img id="result-image" alt="Real recorded YouCam Clothes V4 output: synthetic adult model wearing the rust shirt" width="1024" height="1536">
+            <figcaption id="result-caption">Rust shirt · Saved real output</figcaption>
+          </figure>
+        </div>
+        <div class="viewer-bottom"><p id="viewer-status">Two saved real outputs · Same synthetic source</p><button type="button" id="reset-view">Reset view <span aria-hidden="true">↺</span></button></div>
+        <p id="interaction-status" class="interaction-status" aria-live="polite">Viewing saved results creates no new request.</p>
+      </div>
+    </section>
+
+    <section id="provenance" class="proof-section" aria-labelledby="proof-title" hidden>
+      <div class="proof-intro"><p class="eyebrow">LESS MYSTERY. MORE PROOF.</p><h2 id="proof-title">The details behind both looks.</h2><p>Totals cover the two saved generations. Each has its own source record and verified usage-ledger debit.</p></div>
+      <div class="proof-stats">
+        <article><span class="proof-number" id="generation-total">02</span><h3>Real generations</h3><p>One approved request per look.<br>No automatic retry.</p></article>
+        <article><span class="proof-number" id="nominal-units"><span id="nominal-value" class="number-value">4</span><span> units</span></span><h3>Total nominal price</h3><p>Two units per Clothes V4 task.<br>A price, not an assumed bill.</p></article>
+        <article><span class="proof-number" id="actual-units"><span id="actual-value" class="number-value">4</span><span> units</span></span><h3>Total verified debit</h3><p>Two separate usage-ledger entries.<br>No purchase or recharge.</p></article>
+      </div>
+      <div class="run-ledger" aria-label="Individual generation records">
+        <article><span class="small-label">LOOK A · FOREST CREWNECK</span><p id="run-a-date"></p><strong id="run-a-units"></strong><p id="run-a-verified"></p><p id="run-a-requests"></p></article>
+        <article><span class="small-label">LOOK B · RUST SHIRT</span><p id="run-b-date"></p><strong id="run-b-units"></strong><p id="run-b-verified"></p><p id="run-b-requests"></p></article>
+      </div>
+      <details class="evidence-details"><summary><span><svg viewBox="0 0 20 20" aria-hidden="true" fill="none"><path d="M5 2h7l3 3v13H5V2Z"/><path d="M12 2v4h3M8 10h4M8 13h4"/></svg> Inspect the source &amp; request record</span><span aria-hidden="true">+</span></summary>
+        <div class="evidence-grid">
+          <div><span class="small-label">SELECTED OPTION</span><p id="evidence-option">Forest crewneck · Recorded success</p></div>
+          <div><span class="small-label">PROVIDER &amp; VERSION</span><p id="evidence-provider">YouCam API · cloth-v4</p></div>
+          <div><span class="small-label">RESULT RECORDED</span><p id="evidence-date">30 Oct 2026, 17:26 UTC · local result observation</p></div>
+          <div><span class="small-label">REQUEST RECORD</span><p id="evidence-requests">1 registration · 2 uploads · 1 generation · 2 status checks</p></div>
+          <div><span class="small-label">SELECTED LOOK · PROCESSING UNITS</span><p id="evidence-units">2 nominal units · 2 actual ledger debit</p></div>
+          <div class="hash-row"><span class="small-label">SYNTHETIC SOURCE · SHA-256</span><code id="source-hash"></code></div>
+          <div class="hash-row"><span class="small-label">GARMENT REFERENCE · SHA-256</span><code id="input-hash"></code></div>
+          <div class="hash-row"><span class="small-label">ACTUAL RESULT · SHA-256</span><code id="result-hash"></code></div>
+          <div><span class="small-label">USAGE VERIFIED</span><p id="usage-date">30 Oct 2026, 17:27 UTC · provider ledger</p></div>
+        </div>
+      </details>
+      <div class="honesty-note"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/></svg><p><strong>A demonstration, with boundaries.</strong> All inputs are original synthetic imagery. This page uses saved results, does not access a camera, and does not send photos or generation requests. It makes no claim about fit, sizing, identity preservation or sales performance.</p></div>
+    </section>
+  </main>
+  <footer class="shell site-footer"><span>StyleProof<span class="brand-period">.</span> <span class="footer-caption">Made to compare. Built to be clear.</span></span><span>Two real outputs verified · Recorded demo · Contest submission pending.</span></footer>
+</body>
+</html>

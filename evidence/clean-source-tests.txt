@@ -1,0 +1,47 @@
+✔ phase2 manifest contains two independently recorded genuine outputs and four ledger-verified units (0.80375ms)
+✔ every included source/result file has the actual approved SHA256; no changed or invented output (9.495667ms)
+✔ a foreign/signed URL or an altered actual-output hash fails closed (0.455333ms)
+✔ B cannot reuse A or swap its approved garment reference (0.096875ms)
+✔ unexpected secret/raw-response fields, invented counts and missing actual usage are rejected (0.092875ms)
+✔ repeated choice/view/reset actions alter local state only and preserve immutable evidence (0.591667ms)
+✔ manifest retrieval has one same-origin read and no account credentials or redirect following (0.196834ms)
+✔ static route serves a working document with restrictive CSP and no active-generation form (1.216167ms)
+✔ two-look view pairs actual A and B, while before/after shares the unchanged synthetic source (0.162459ms)
+✔ single-image modes show only the requested original or selected real output (0.106291ms)
+✔ per-run counters and observation times retain the different A and B execution records (0.086958ms)
+✔ invented zero debit, account-balance-derived measurement or altered observation time fails closed (0.102666ms)
+✔ invalid selections, view names, missing results and injected labels do not become successes (0.106291ms)
+✔ manifest failures and extra nested raw provider fields are rejected without a fallback output (0.111041ms)
+✔ both immutable output assets are served as JPEG while mutation and unknown sibling assets are refused (2.270958ms)
+✔ actual client rendering and repeated controls make only one local manifest read and use each matching result (24.894791ms)
+✔ public server cannot process, upload, mutate or serve private/operator paths (0.191458ms)
+✔ public package contains no environment/runtime files, external executable imports or unsafe DOM insertion (0.922625ms)
+✔ default dry-run validates fixed originals, without a key, fetch or journal (16.736166ms)
+✔ exact successful probe: 1 metadata POST, 2 PUTs, 1 task POST and explicit 10s poll; no download by default (83.460583ms)
+✔ changed approved portable input is rejected before any request (5.726875ms)
+✔ documented opaque + / = file IDs are preserved; task ID is URL-encoded, including on resume (90.490916ms)
+✔ second malicious upload host rejects the entire plan before either PUT or generation (27.122083ms)
+✔ provider storage headers cannot leak bearer credentials (23.09075ms)
+✔ lost generation response persists intent; resume and restart cannot make a second POST (69.404041ms)
+✔ lost metadata response cannot be re-posted either (32.822791ms)
+✔ an interrupted known task resumes only GET polling, never POST/upload (87.975375ms)
+✔ poll limit is persisted across resumes, with at most12total GETs (198.144542ms)
+✔ redirect and wrong API host cannot send bearer or create a task (34.656583ms)
+✔ result download requires explicit flag and exact signed provider result (103.446792ms)
+✔ unapproved result URL is never downloaded, despite successful provider status (74.108709ms)
+✔ no actual B approval means no request and no task journal (12.218708ms)
+✔ approval must bind exact B scope, both input hashes and a single generation (34.861208ms)
+✔ approval cannot be public-readable or a symlink (12.349583ms)
+✔ B never changes historical A state and rejects copied A journals (14.217042ms)
+✔ successful B writes only its fixed journal and leaves an existing A journal unchanged (70.446084ms)
+✔ fixed B runtime cannot be overridden and runtime symlinks cannot escape clone (10.087166ms)
+✔ B-only manifest rejects garment A substitution before network (4.485958ms)
+✔ portable CLI dry-run works from an isolated clone, unrelated CWD and no environment (37.070209ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1081.034917

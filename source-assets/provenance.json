@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Portable unchanged synthetic source assets, not provider results or processing authorisation.",
+  "assets": [
+    {
+      "id": "synthetic-adult-model",
+      "sha256": "4899e37d3c02ff680852747e1608cfe97eecc7e861fdc29ad566ec648dedb98d",
+      "bytes": 1969964,
+      "width": 1024,
+      "height": 1536,
+      "synthetic": true,
+      "realPersonReferenceSupplied": false,
+      "thirdPartyPhotoOrLogoSupplied": false,
+      "exclusiveCopyrightOrModelReleaseClaimed": false,
+      "path": "source-assets/synthetic-adult-model.png",
+      "origin": "Original built-in imagegen prompt without reference images",
+      "originalProvenanceAsOfUTC": "2026-10-28T19:19:16.918193+00:00"
+    },
+    {
+      "id": "garment-a-forest-crewneck",
+      "sha256": "ed786800cfeedda7f0bffd83fe0fdedf1211dfe0e7032f169ff239c7a019af6b",
+      "bytes": 1953638,
+      "width": 1254,
+      "height": 1254,
+      "synthetic": true,
+      "realPersonReferenceSupplied": false,
+      "thirdPartyPhotoOrLogoSupplied": false,
+      "exclusiveCopyrightOrModelReleaseClaimed": false,
+      "path": "source-assets/garment-a-forest-crewneck.png",
+      "origin": "Original built-in imagegen prompt without reference images",
+      "originalProvenanceAsOfUTC": "2026-10-28T19:19:16.918193+00:00"
+    },
+    {
+      "id": "garment-b-rust-shirt",
+      "sha256": "e544259e22d76109b689f31a2512e6ec0ec57f99476232f74a85a44efc602b10",
+      "bytes": 1780996,
+      "width": 1254,
+      "height": 1254,
+      "synthetic": true,
+      "realPersonReferenceSupplied": false,
+      "thirdPartyPhotoOrLogoSupplied": false,
+      "exclusiveCopyrightOrModelReleaseClaimed": false,
+      "path": "source-assets/garment-b-rust-shirt.png",
+      "origin": "Original built-in imagegen prompt without reference images",
+      "originalProvenanceAsOfUTC": "2026-10-28T19:19:16.918193+00:00"
+    }
+  ]
+}

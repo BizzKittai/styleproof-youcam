@@ -1,0 +1,136 @@
+TAP version 13
+# Subtest: default dry-run validates fixed originals, without a key, fetch or journal
+ok 1 - default dry-run validates fixed originals, without a key, fetch or journal
+  ---
+  duration_ms: 19.606875
+  type: 'test'
+  ...
+# Subtest: exact successful probe: 1 metadata POST, 2 PUTs, 1 task POST and explicit 10s poll; no download by default
+ok 2 - exact successful probe: 1 metadata POST, 2 PUTs, 1 task POST and explicit 10s poll; no download by default
+  ---
+  duration_ms: 95.729834
+  type: 'test'
+  ...
+# Subtest: changed approved portable input is rejected before any request
+ok 3 - changed approved portable input is rejected before any request
+  ---
+  duration_ms: 5.601333
+  type: 'test'
+  ...
+# Subtest: documented opaque + / = file IDs are preserved; task ID is URL-encoded, including on resume
+ok 4 - documented opaque + / = file IDs are preserved; task ID is URL-encoded, including on resume
+  ---
+  duration_ms: 87.37325
+  type: 'test'
+  ...
+# Subtest: second malicious upload host rejects the entire plan before either PUT or generation
+ok 5 - second malicious upload host rejects the entire plan before either PUT or generation
+  ---
+  duration_ms: 26.032959
+  type: 'test'
+  ...
+# Subtest: provider storage headers cannot leak bearer credentials
+ok 6 - provider storage headers cannot leak bearer credentials
+  ---
+  duration_ms: 25.925875
+  type: 'test'
+  ...
+# Subtest: lost generation response persists intent; resume and restart cannot make a second POST
+ok 7 - lost generation response persists intent; resume and restart cannot make a second POST
+  ---
+  duration_ms: 64.807125
+  type: 'test'
+  ...
+# Subtest: lost metadata response cannot be re-posted either
+ok 8 - lost metadata response cannot be re-posted either
+  ---
+  duration_ms: 34.023666
+  type: 'test'
+  ...
+# Subtest: an interrupted known task resumes only GET polling, never POST/upload
+ok 9 - an interrupted known task resumes only GET polling, never POST/upload
+  ---
+  duration_ms: 84.935208
+  type: 'test'
+  ...
+# Subtest: poll limit is persisted across resumes, with at most12total GETs
+ok 10 - poll limit is persisted across resumes, with at most12total GETs
+  ---
+  duration_ms: 198.57125
+  type: 'test'
+  ...
+# Subtest: redirect and wrong API host cannot send bearer or create a task
+ok 11 - redirect and wrong API host cannot send bearer or create a task
+  ---
+  duration_ms: 36.593958
+  type: 'test'
+  ...
+# Subtest: result download requires explicit flag and exact signed provider result
+ok 12 - result download requires explicit flag and exact signed provider result
+  ---
+  duration_ms: 109.005416
+  type: 'test'
+  ...
+# Subtest: unapproved result URL is never downloaded, despite successful provider status
+ok 13 - unapproved result URL is never downloaded, despite successful provider status
+  ---
+  duration_ms: 75.651375
+  type: 'test'
+  ...
+# Subtest: no actual B approval means no request and no task journal
+ok 14 - no actual B approval means no request and no task journal
+  ---
+  duration_ms: 8.417041
+  type: 'test'
+  ...
+# Subtest: approval must bind exact B scope, both input hashes and a single generation
+ok 15 - approval must bind exact B scope, both input hashes and a single generation
+  ---
+  duration_ms: 29.304
+  type: 'test'
+  ...
+# Subtest: approval cannot be public-readable or a symlink
+ok 16 - approval cannot be public-readable or a symlink
+  ---
+  duration_ms: 10.30925
+  type: 'test'
+  ...
+# Subtest: B never changes historical A state and rejects copied A journals
+ok 17 - B never changes historical A state and rejects copied A journals
+  ---
+  duration_ms: 15.514792
+  type: 'test'
+  ...
+# Subtest: successful B writes only its fixed journal and leaves an existing A journal unchanged
+ok 18 - successful B writes only its fixed journal and leaves an existing A journal unchanged
+  ---
+  duration_ms: 70.062083
+  type: 'test'
+  ...
+# Subtest: fixed B runtime cannot be overridden and runtime symlinks cannot escape clone
+ok 19 - fixed B runtime cannot be overridden and runtime symlinks cannot escape clone
+  ---
+  duration_ms: 7.82825
+  type: 'test'
+  ...
+# Subtest: B-only manifest rejects garment A substitution before network
+ok 20 - B-only manifest rejects garment A substitution before network
+  ---
+  duration_ms: 4.835625
+  type: 'test'
+  ...
+# Subtest: portable CLI dry-run works from an isolated clone, unrelated CWD and no environment
+ok 21 - portable CLI dry-run works from an isolated clone, unrelated CWD and no environment
+  ---
+  duration_ms: 37.281916
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1099.604917

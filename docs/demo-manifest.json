@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "project": "StyleProof",
+  "phase": "two-results",
+  "recordedAtUTC": "2026-10-30T18:22:59.309313Z",
+  "source": {
+    "id": "synthetic-model",
+    "label": "Original synthetic model",
+    "synthetic": true,
+    "asset": {
+      "path": "assets/synthetic-adult-model.png",
+      "sha256": "4899e37d3c02ff680852747e1608cfe97eecc7e861fdc29ad566ec648dedb98d"
+    }
+  },
+  "options": [
+    {
+      "id": "look-a",
+      "label": "Forest crewneck",
+      "color": "Forest green",
+      "status": "recorded_success",
+      "input": {
+        "path": "assets/garment-a-forest-crewneck.png",
+        "sha256": "ed786800cfeedda7f0bffd83fe0fdedf1211dfe0e7032f169ff239c7a019af6b"
+      },
+      "result": {
+        "path": "assets/youcam-garment-a-result.jpg",
+        "sha256": "0cdcb53e100c68d7e12b614de0a15f6f4db33cd4c8d44cd0b807effa12bd3156",
+        "recordedAtUTC": "2026-10-30T17:26:15.067595Z",
+        "provider": "YouCam API",
+        "version": "cloth-v4"
+      },
+      "request": {
+        "metadataPosts": 1,
+        "uploadPuts": 2,
+        "generationPosts": 1,
+        "statusGets": 2,
+        "automaticRetries": 0
+      },
+      "units": {
+        "nominal": 2,
+        "actual": 2,
+        "measurement": "provider_usage_ledger",
+        "verifiedAtUTC": "2026-10-30T17:27:29.456376Z"
+      }
+    },
+    {
+      "id": "look-b",
+      "label": "Rust shirt",
+      "color": "Rust",
+      "status": "recorded_success",
+      "input": {
+        "path": "assets/garment-b-rust-shirt.png",
+        "sha256": "e544259e22d76109b689f31a2512e6ec0ec57f99476232f74a85a44efc602b10"
+      },
+      "result": {
+        "path": "assets/youcam-garment-b-result.jpg",
+        "sha256": "e2fc41a242fdd8962d9758676e4ccca96f02c9427c630d9e28933e7723150e62",
+        "recordedAtUTC": "2026-10-30T18:22:12.361748Z",
+        "provider": "YouCam API",
+        "version": "cloth-v4"
+      },
+      "request": {
+        "metadataPosts": 1,
+        "uploadPuts": 2,
+        "generationPosts": 1,
+        "statusGets": 1,
+        "automaticRetries": 0
+      },
+      "units": {
+        "nominal": 2,
+        "actual": 2,
+        "measurement": "provider_usage_ledger",
+        "verifiedAtUTC": "2026-10-30T18:22:59.309313Z"
+      }
+    }
+  ]
+}
