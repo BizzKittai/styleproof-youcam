@@ -1,5 +1,11 @@
 # StyleProof
 
+[Open recorded demo](https://bizzkittai.github.io/styleproof-youcam/)
+
+No login, installation or API key is needed. This read-only viewer shows two
+saved, genuine YouCam Clothes V4 results. Viewing or switching looks creates no
+new generation request.
+
 Compare two real YouCam clothing results with their source images, recorded
 processing evidence and unit consumption.
 
