@@ -2,6 +2,8 @@
 
 [Open recorded demo](https://bizzkittai.github.io/styleproof-youcam/)
 
+[Watch the English walkthrough (1:47)](https://www.youtube.com/watch?v=X3euSSCazvg)
+
 No login, installation or API key is needed. This read-only viewer shows two
 saved, genuine YouCam Clothes V4 results. Viewing or switching looks creates no
 new generation request.
@@ -104,8 +106,8 @@ For judging, the local recorded viewer is usable without provider credentials.
 Fresh provider execution needs the judge/operator's own authorised access; no
 unrestricted author-funded generation or guaranteed sponsor acceptance of
 replay-only testing is claimed. Source/test-build availability is intended to
-remain free through 20 November 2026, 16:45 UTC. A public video URL will be added only
-after actual recording and verified publication.
+remain free through 20 November 2026, 16:45 UTC. The published English walkthrough
+is linked above and shows the genuine saved results, not continuous live generation.
 
 ## AI assistance and licensing
 
